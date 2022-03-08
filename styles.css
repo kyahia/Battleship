@@ -1,0 +1,56 @@
+footer{
+   font-size: 20vh;
+   color: gold;
+   width: fit-content;
+   margin: auto;
+}
+
+header{
+   text-align: center;
+}
+header div{
+   margin: 10px auto;
+   display: grid;
+   width: 500px;
+   grid-template-columns: repeat(10, 50px);
+   grid-template-rows: repeat(10, 50px);
+   background: #000;
+}
+
+main{
+   display: grid;
+   grid-template-columns: repeat(2, 1fr);
+}
+
+section div{
+   display: grid;
+   grid-template-columns: repeat(10, 30px);
+   width: 300px;
+   margin: auto;
+}
+
+div button{
+   min-height : 30px;
+   min-width: 30px;
+}
+
+.hovered{
+   background-color: red;
+}
+
+.placed{
+   background-color: greenyellow;
+}
+
+p{
+   text-align: center;
+   font-size: xx-large;
+}
+
+.damaged{
+   background-color: red;
+}
+
+.not-damaged{
+   background-color: aqua;
+}
