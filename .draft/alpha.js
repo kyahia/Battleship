@@ -1,28 +1,81 @@
-import {Player, GameBoard} from './factors';
+const Ship = function (length, xy) {
+   const getLength = () => length;
 
-let playerName;
+   let positions = xy.map(coord => ({ position: coord, isHit: false }))
 
-const intro = document.querySelector('nav');
-const introForm = document.getElementById('intro-form');
-introForm.addEventListener('submit', e => {
-   console.log(1)
-   e.preventDefault();
-   playerName = introForm['user-name'].value;
-   intro.style.display = 'none';
-   loadGame();
-});
+   const hit = coordinate => {
+      const hitPoint = positions.find(couple => couple.position === coordinate)
+      hitPoint.isHit = true;
+   }
 
-// Start game
-function loadGame(level = '1'){
-   const grid = buildBoard()
-   
-   document.querySelector('header').appendChild(designBoard(grid));
-   const gamer = Player(playerName);
-   
-   designPlaceShips(gamer, grid)
+   const isSunk = () => {
+      return positions.reduce((prev, act) => act.isHit && prev, true);
+   }
+
+   return { getLength, hit, isSunk }
 }
 
-function goToMain(gamer, grid) {
+// Each Player's GAME BOARD
+
+const GameBoard = () => {
+
+   let ships = [];
+   let missedAttacks = []; // done
+
+   const placeShip = (size, coordinates) => {
+      let newShip = {};
+      newShip['ship'] = Ship(size, coordinates)
+      newShip['pts'] = coordinates;
+      ships.push(newShip);
+   }
+
+   const receiveAttack = coordinate => {
+      let damagedShip = ships.find(ship => ship.pts.find(pt => pt === coordinate))
+
+      if (damagedShip) {
+         damagedShip.ship.hit(coordinate);
+         return 'success';
+      } else {
+         missedAttacks.push(coordinate)
+         return 'miss';
+      }
+   }
+
+   const hasLost = () => ships.reduce((prev, act) => prev && act.ship.isSunk(), true);
+
+   return { missedAttacks, receiveAttack, placeShip, hasLost }
+}
+
+
+// Player factory
+const Player = name => {
+   const getName = () => name;
+   const board = GameBoard(name);
+
+   let attackedPts = [];
+
+   const attack = (enemy, coordinate) => {
+      if (attackedPts.includes(coordinate)) {
+      } // already attacked
+      else{
+         attackedPts.push(coordinate);
+         return enemy.board.receiveAttack(coordinate); // available choice
+      }
+   }
+
+   return { getName, attack, board }
+}
+
+// Start game
+const grid = buildBoard()
+
+document.querySelector('header').appendChild(designBoard(grid));
+const gamer = Player('Yahia');
+
+designPlaceShips(gamer, grid)
+
+
+function goToMain() {
    document.querySelector('header').textContent = ''
    // build player computer
    const computerPlayer = Player('AI');
@@ -51,7 +104,7 @@ function goToMain(gamer, grid) {
       if (Attackresult === 'miss') {
          computerBoard.querySelector(`#${cell.id}`).className = 'not-damaged';
          while (looping) {
-            looping = randAttack(grid, computerPlayer, gamer, playerBoard);
+            looping = randAttack(computerPlayer, gamer, playerBoard);
          }
       } else {
          computerBoard.querySelector(`#${event.target.id}`).className = 'damaged';
@@ -85,6 +138,7 @@ function placeComputerShips(botPlayer) {
          if (coordinates.length) {
             computerBoard = placeShip(botPlayer, coordinates, computerBoard);
             looping = false;
+            console.log(coordinates)
          }
       }
    }
@@ -93,7 +147,7 @@ function placeComputerShips(botPlayer) {
 
 // operational functions
 
-function randAttack(grid, computer, myPlayer, myPlayerBoard){
+function randAttack(computer, myPlayer, myPlayerBoard){
    let randAIchoice;
    let attackResult;
    do {
@@ -102,6 +156,7 @@ function randAttack(grid, computer, myPlayer, myPlayerBoard){
    } while (!attackResult)
 
    if (attackResult === 'success') {
+      console.log(randAIchoice, 'sucess')
       myPlayerBoard.querySelector(`#${randAIchoice}`).className = 'damaged';
       checkWinner(computer.getName(), myPlayer.getName())
       return true
@@ -150,7 +205,7 @@ function designPlaceShips(player, grid) {
             shipsSizes.pop();
          }
          if (shipsSizes.length === 0) {
-            goToMain(player, grid)
+            goToMain()
          }
       })
    })
@@ -249,13 +304,6 @@ function checkWinner(currentPlayer, opponent){
    }, 0) === 16 ? displayWinner() : {}
    function displayWinner(){
       document.querySelector('main').textContent = '';
-      document.querySelector('footer').className = 'shown';
-      document.querySelector('#winner').textContent = currentPlayer + ' Wins';
+      document.querySelector('footer').textContent = currentPlayer + ' Wins';
    }
 }
-const reloadForm = document.getElementById('reload');
-reloadForm.addEventListener('submit', e => {
-   e.preventDefault();
-   document.querySelector('footer').classList.remove('shown');
-   loadGame(reloadForm.level.value);
-})

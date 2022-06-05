@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Game</title>
+   <style>
+      button{
+         background-color: aliceblue;
+         animation-duration: 2s;
+   animation-timing-function: ease-in-out;
+   animation-delay: 0s;
+   animation-iteration-count: infinite;
+   animation-direction:alternate;
+   animation-fill-mode:forwards;
+   animation-play-state: running;
+   animation-name: glow;
+      }
+      @keyframes glow {
+         0%{
+            height: 1rem;
+         } 100%{
+            height: 2rem;
+            background-color: gold;
+         }
+      }
+   </style>
+   <!-- <link rel="stylesheet" href="../dist/styles.css"> -->
+   <!-- <script src="./alpha.js" defer></script> -->
+</head>
+<body>
+   <button>abc</button>
+   <header></header>
+   <main></main>
+   <footer></footer>
+</body>
+</html>
