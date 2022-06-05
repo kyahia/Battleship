@@ -9,8 +9,31 @@
    <script src="./main.js" defer></script>
 </head>
 <body>
+   <nav class="shown">
+      <form id="intro-form">
+         <label for="user-name">Enter your name</label>
+         <input type="text" id="user-name" name="user-name" minlength="3" required>
+         <p>
+            Battleship is a marine war game. Position your ships, then strike your opponent's field to sink all of their ships.
+            <br/>
+            Let's play !
+         </p>
+         <button type="submit">Position your Ships</button>
+      </form>
+   </nav>
    <header></header>
    <main></main>
-   <footer></footer>
+   <footer>
+      <h1 id="winner"></h1>
+      <form id="reload">
+         <p>
+            <label>Level : </label>
+            <input type="number" name="level" id="level" min="1" max="2" value="1" required>
+         </p>
+         <p>
+            <button type="submit">Replay</button>
+         </p>
+      </form>
+   </footer>
 </body>
 </html>

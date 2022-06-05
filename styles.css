@@ -1,8 +1,11 @@
-footer{
+#winner{
    font-size: 20vh;
    color: gold;
-   width: fit-content;
-   margin: auto;
+}
+
+footer{
+   height: 0;
+   overflow: hidden;
 }
 
 header{
@@ -53,4 +56,34 @@ p{
 
 .not-damaged{
    background-color: aqua;
+}
+
+.shown{
+   text-align: center;
+   font-size: 2rem;
+   height: calc(100vh - 2 * 8px);
+   display: flex;
+   flex-direction: column;
+   justify-content: center;
+   align-items: center;
+}
+.shown input[type="number"]{
+   border: 0;
+   width: 2ch;
+   font-size: 2rem;
+}
+.shown input[type="text"]{
+   font-size: 2rem;
+}
+.shown button{
+   background-color: aliceblue;
+   font-size: 2rem;
+   font-weight: bold;
+   padding: .5rem;
+   animation: glow 1s ease-in-out infinite alternate;
+}
+@keyframes glow {
+   100%{
+      background-color: gold;
+   }
 }
